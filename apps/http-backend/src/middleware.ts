@@ -10,7 +10,6 @@ export function middleware(req:Request , res:Response, next:NextFunction){
         throw new Error("JWT is not defined.");
     }
     const decoded = jwt.verify(token, JWT_SECRET);
-
     if(decoded){
         // @ts-ignore
         req.userId = decoded.userId;
