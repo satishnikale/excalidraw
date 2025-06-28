@@ -1,6 +1,4 @@
 "use client";
-
-
 import React, { useState } from 'react';
 import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
 

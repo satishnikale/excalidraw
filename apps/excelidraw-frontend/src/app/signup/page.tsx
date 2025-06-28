@@ -2,12 +2,14 @@
 
 import React, { useState } from 'react';
 import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Check } from 'lucide-react';
+import axios from 'axios';
 
 interface SignUpProps {
   onSwitchToSignIn: () => void;
 }
 
 export default function SignUp({ onSwitchToSignIn }: SignUpProps) {
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -32,7 +34,7 @@ export default function SignUp({ onSwitchToSignIn }: SignUpProps) {
   };
 
   const passwordRequirements = [
-    { text: 'At least 8 characters', met: formData.password.length >= 8 },
+    { text: 'At least 8 characters', met: formData.password.length >= 6 },
     { text: 'Contains uppercase letter', met: /[A-Z]/.test(formData.password) },
     { text: 'Contains lowercase letter', met: /[a-z]/.test(formData.password) },
     { text: 'Contains a number', met: /\d/.test(formData.password) },
@@ -176,6 +178,11 @@ export default function SignUp({ onSwitchToSignIn }: SignUpProps) {
         </div>
 
         <button
+        onClick={() => {
+          axios.post({
+            
+          })
+        }}
           type="submit"
           disabled={isLoading || formData.password !== formData.confirmPassword}
           className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]"
