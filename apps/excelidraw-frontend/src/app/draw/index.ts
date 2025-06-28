@@ -13,7 +13,14 @@ type Shape =
       centerX: number;
       centerY: number;
       radius: number;
-    };
+    }
+  | {
+    type: "pencil";
+    startX: number;
+    startY: number;
+    endX : number;
+    endY: number;
+  };
 
 export async function initDraw(canvas: HTMLCanvasElement, roomId: string, socket: WebSocket) {
   const ctx = canvas.getContext("2d");
@@ -35,7 +42,6 @@ export async function initDraw(canvas: HTMLCanvasElement, roomId: string, socket
   ctx.scale(scale, scale);
 
   let existingShapes: Shape[] = await getExistingShapes(roomId);
-  console.log("my Exsisiting shapes", existingShapes)
 
   let clicked = false;
   let startX = 0;
@@ -89,7 +95,7 @@ export async function initDraw(canvas: HTMLCanvasElement, roomId: string, socket
         const height = pos.y - startY;
 
         clearCanvas(existingShapes, canvas, ctx);
-        ctx.strokeStyle = "rgba(255, 255, 255)";
+        ctx.strokeStyle = "rgba(227, 227, 232)";
         ctx.strokeRect(startX, startY, width, height);
       }
     });
@@ -105,7 +111,7 @@ function clearCanvas(
 
   existingShapes?.map((shape) => {
     if (shape.type == "rect") {
-      ctx.strokeStyle = "rgba(255, 255, 255, 1)";
+      ctx.strokeStyle = "rgba(227, 227, 232, 1)";
       ctx.strokeRect(shape.x, shape.y, shape.width, shape.height);
     }
   });

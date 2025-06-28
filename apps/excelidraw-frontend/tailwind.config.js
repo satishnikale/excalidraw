@@ -16,6 +16,9 @@ module.exports = {
       screens: {
         'xs': '475px',
       },
+      colors:{
+      lightBlack:'rgb(227,227,232)'
+    }
     },
   },
   plugins: [],

@@ -1,5 +1,6 @@
 import express from "express";
 import { Request, Response } from "express";
+import cors from "cors";
 import "dotenv/config";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
@@ -9,6 +10,7 @@ import { CreateRoomSchema, CreateUserSchema, SignInSchema } from "@repo/common/t
 import { prismaClient } from "@repo/db/client";
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 app.post("/signup", async (req, res) => {
   const parsedData = CreateUserSchema.safeParse(req.body);

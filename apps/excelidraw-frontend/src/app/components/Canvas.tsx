@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { initDraw } from "../draw";
-
+import { IconButton } from "./IconButton";
 
 export function Canvas({roomId, socket}:{roomId: string, socket:WebSocket}){
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -12,6 +12,7 @@ export function Canvas({roomId, socket}:{roomId: string, socket:WebSocket}){
 
 
     return <div className="w-full h-screen">
-         <canvas ref={canvasRef} className="w-full h-screen bg-black"> </canvas>
+         <canvas ref={canvasRef} className="w-full h-screen bg-lightBlack relative"> </canvas>
+         <IconButton />
     </div>
 }
