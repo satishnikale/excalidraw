@@ -1,5 +1,5 @@
 import axios from "axios";
-import { HTTP_BACKEND } from "../config";
+import { HTTP_BACKEND } from "@/app/config";
 
 export async function getExistingShapes(roomId: string) {
   const response = await axios.get(`${HTTP_BACKEND}/chats/${roomId}`);

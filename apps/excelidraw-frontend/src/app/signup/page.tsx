@@ -41,7 +41,7 @@ export default function SignUp({ onSwitchToSignIn }: SignUpProps) {
   ];
 
   return (
-    <div className="w-full max-w-md mx-auto mt-14">
+    <div className="w-full max-w-sm mx-auto mt-14 font-poppins px-10 md:px-0">
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold text-gray-900 mb-2">Create account</h2>
         <p className="text-gray-600">Join ExceliDraw and start creating</p>
@@ -178,11 +178,6 @@ export default function SignUp({ onSwitchToSignIn }: SignUpProps) {
         </div>
 
         <button
-        onClick={() => {
-          axios.post({
-            
-          })
-        }}
           type="submit"
           disabled={isLoading || formData.password !== formData.confirmPassword}
           className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]"

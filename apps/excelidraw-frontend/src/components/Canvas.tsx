@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { IconButton } from "./IconButton";
-import { Circle, Hand, LucideArrowRight, LucideDiamond, LucideMousePointer, Pen, Pencil, Square } from "lucide-react";
+import { Circle, Hand, LucideArrowRight, LucideDiamond, LucideMinus, LucideMousePointer, Pen, Pencil, Square } from "lucide-react";
 import { Draw } from "../draw/Draw";
 
 export type Tool = "circle" | "rect" | "pencil" | "line"; // | "hand" | "pointer" | "diamond" | "rightArrow";
@@ -82,14 +82,14 @@ function Topbar({
             return setSelectedTool("pencil");
           }}
           activated={selectedTool === "pencil"}
-          icon={<Pen size={16} />}
+          icon={<Pen size={14} />}
         />
         <IconButton
           onClick={() => {
             setSelectedTool("rect");
           }}
           activated={selectedTool === "rect"}
-          icon={ <Square size={16} /> }
+          icon={ <Square size={14} /> }
         />
 
         {/* <IconButton
@@ -97,14 +97,14 @@ function Topbar({
             setSelectedTool("diamond");
           }}
           activated={selectedTool === "diamond"}
-          icon={<LucideDiamond size={16} />}
+          icon={<LucideDiamond size={14} />}
         /> */}
         <IconButton
           onClick={() => {
             setSelectedTool("circle");
           }}
           activated={selectedTool === "circle"}
-          icon={<Circle size={16} />}
+          icon={<Circle size={14} />}
         />
 
         <IconButton
@@ -112,7 +112,7 @@ function Topbar({
             setSelectedTool("line");
           }}
           activated={selectedTool === "line"}
-          icon={<LucideArrowRight size={16} />}
+          icon={<LucideMinus size={14} />}
         />
       </div>
 
