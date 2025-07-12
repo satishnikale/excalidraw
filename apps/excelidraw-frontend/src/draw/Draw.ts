@@ -1,5 +1,9 @@
 import { Tool } from "../components/Canvas";
 import { getExistingShapes } from "./http";
+import { drawCircle } from "./Circle";
+import { drawRectangle } from "./Rectangle";
+import { drawLine } from "./Line";
+import { drawArrow } from "./Arrow";
 
 type Shape =
   | {
@@ -16,7 +20,7 @@ type Shape =
       radius: number;
     }
   | {
-      type: "pencil";
+      type: "arrow";
       startX: number;
       startY: number;
       endX: number;
@@ -62,7 +66,7 @@ export class Draw {
     this.canvas.removeEventListener("mousemove", this.mouseMoveHandler);
   }
 
-  setTool(tool: "circle" | "pencil" | "rect" | "line") {
+  setTool(tool: "circle" | "pencil" | "rect" | "line" | "arrow") {
     this.selectedTool = tool;
   }
 
@@ -89,28 +93,22 @@ export class Draw {
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.existingShapes?.map((shape) => {
+      // Draw rectangle 
       if (shape.type === "rect") {
-        this.ctx.strokeStyle = "rgba(255, 255, 255)";
-        this.ctx.strokeRect(shape.x, shape.y, shape.width, shape.height);
-      } else if (shape.type === "circle") {
-        console.log(shape);
-        this.ctx.beginPath();
-        this.ctx.arc(
-          shape.centerX,
-          shape.centerY,
-          Math.abs(shape.radius),
-          0,
-          Math.PI * 2
-        );
-        this.ctx.stroke();
-        this.ctx.closePath();
-      } else if (shape.type === "line") {
+        drawRectangle(this.ctx, shape);
+      } 
+      // Draw circle 
+      else if (shape.type === "circle") {
+        drawCircle(this.ctx, shape);
+      } 
+      // Draw line 
+      else if (shape.type === "line") {
+        // Draw line
+        drawLine(this.ctx, shape);
+        
+      } else if (shape.type === "arrow") {
         // here is code for drawing line...
-        this.ctx.beginPath();
-        this.ctx.moveTo(shape.startX, shape.startY);
-        this.ctx.lineTo(shape.endX, shape.endY);
-        this.ctx.stroke();
-        this.ctx.closePath();
+        drawArrow(this.ctx, shape);
       }
     });
   }
@@ -145,14 +143,22 @@ export class Draw {
         centerX: this.startX + radius,
         centerY: this.startY + radius,
       };
-    } else if(selectedTool === "line"){
-        shape = {
-            type: "line",
-            startX: this.startX,
-            startY: this.startY,
-            endX: width,
-            endY : height
-        }
+    } else if (selectedTool === "line") {
+      shape = {
+        type: "line",
+        startX: this.startX,
+        startY: this.startY,
+        endX: e.clientX,
+        endY: e.clientY,
+      };
+    } else if (selectedTool === "arrow") {
+      shape = {
+        type: "line",
+        startX: this.startX,
+        startY: this.startY,
+        endX: e.clientX,
+        endY: e.clientY,
+      };
     }
     if (!shape) {
       return;
@@ -171,7 +177,6 @@ export class Draw {
   };
   mouseMoveHandler = (e: { clientX: number; clientY: number }) => {
     if (this.clicked) {
-
       const width = e.clientX - this.startX;
       const height = e.clientY - this.startY;
 
@@ -184,8 +189,7 @@ export class Draw {
 
       if (selectedTool === "rect") {
         this.ctx.strokeRect(this.startX, this.startY, width, height);
-      } 
-      else if (selectedTool === "circle") {
+      } else if (selectedTool === "circle") {
         const radius = Math.max(width, height) / 2;
         const centerX = this.startX + radius;
         const centerY = this.startY + radius;
@@ -193,12 +197,18 @@ export class Draw {
         this.ctx.arc(centerX, centerY, Math.abs(radius), 0, Math.PI * 2);
         this.ctx.stroke();
         this.ctx.closePath();
-      } 
-      else if(selectedTool === "line"){
+      } else if (selectedTool === "line") {
         this.ctx.beginPath();
         this.ctx.moveTo(this.startX, this.startY);
-        this.ctx.lineTo(width, height);
+        this.ctx.lineTo(e.clientX, e.clientY);
         this.ctx.stroke();
+        this.ctx.closePath();
+      } else if (selectedTool === "arrow") {
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.startX, this.startY);
+        this.ctx.lineTo(e.clientX, e.clientY);
+        this.ctx.stroke();
+        this.ctx.closePath();
       }
     }
   };

@@ -5,7 +5,7 @@ import { IconButton } from "./IconButton";
 import { Circle, Hand, LucideArrowRight, LucideDiamond, LucideMinus, LucideMousePointer, Pen, Pencil, Square } from "lucide-react";
 import { Draw } from "../draw/Draw";
 
-export type Tool = "circle" | "rect" | "pencil" | "line"; // | "hand" | "pointer" | "diamond" | "rightArrow";
+export type Tool = "circle" | "rect" | "pencil" | "line" | "arrow"; // | "hand" | "pointer" | "diamond" | "rightArrow";
 
 export function Canvas({
   roomId,
@@ -92,13 +92,13 @@ function Topbar({
           icon={ <Square size={14} /> }
         />
 
-        {/* <IconButton
+        <IconButton
           onClick={() => {
-            setSelectedTool("diamond");
+            setSelectedTool("arrow");
           }}
-          activated={selectedTool === "diamond"}
-          icon={<LucideDiamond size={14} />}
-        /> */}
+          activated={selectedTool === "arrow"}
+          icon={<LucideArrowRight size={14} />}
+        />
         <IconButton
           onClick={() => {
             setSelectedTool("circle");
