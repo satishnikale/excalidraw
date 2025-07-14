@@ -19,7 +19,7 @@ export function RoomCanvas({roomId}:{roomId: string}){
     }, []);
 
     if(!socket){
-        return <div className="w-full h-screen flex justify-center items-center">
+        return <div className="w-full h-screen flex justify-center items-center bg-gray-950 text-white">
             Connection to Server!
             <br />
             Please Wait...
