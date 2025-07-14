@@ -93,19 +93,18 @@ export class Draw {
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.existingShapes?.map((shape) => {
-      // Draw rectangle 
+      // Draw rectangle
       if (shape.type === "rect") {
         drawRectangle(this.ctx, shape);
-      } 
-      // Draw circle 
+      }
+      // Draw circle
       else if (shape.type === "circle") {
         drawCircle(this.ctx, shape);
-      } 
-      // Draw line 
+      }
+      // Draw line
       else if (shape.type === "line") {
         // Draw line
         drawLine(this.ctx, shape);
-        
       } else if (shape.type === "arrow") {
         // here is code for drawing line...
         drawArrow(this.ctx, shape);
@@ -153,7 +152,7 @@ export class Draw {
       };
     } else if (selectedTool === "arrow") {
       shape = {
-        type: "line",
+        type: "arrow",
         startX: this.startX,
         startY: this.startY,
         endX: e.clientX,
@@ -204,11 +203,63 @@ export class Draw {
         this.ctx.stroke();
         this.ctx.closePath();
       } else if (selectedTool === "arrow") {
+        // const angle = Math.atan2(
+        //   e.clientY - this.startY,
+        //   e.clientX - this.startX
+        // );
+        // this.ctx.beginPath();
+        // this.ctx.moveTo(this.startX, this.startY);
+        // this.ctx.lineTo(e.clientX, e.clientY);
+        // this.ctx.stroke();
+
+        // // this.ctx.closePath();
+        // // Draw the arrowhead
+        // this.ctx.beginPath();
+        // this.ctx.moveTo(e.clientX, e.clientY);
+        // this.ctx.lineTo(
+        //   e.clientX - 20 * Math.cos(angle - Math.PI / 6),
+        //   e.clientY - 20 * Math.sin(angle - Math.PI / 6)
+        // );
+        // this.ctx.lineTo(
+        //   e.clientX - 20 * Math.cos(angle + Math.PI / 6),
+        //   e.clientY - 20 * Math.sin(angle + Math.PI / 6)
+        // );
+        // this.ctx.closePath();
+        // this.ctx.fillStyle = "white"; // Or any desired color
+        // this.ctx.fill();
+
+        const angle = Math.atan2(
+          e.clientY - this.startY,
+          e.clientX - this.startX
+        );
+
+        // Draw the main line
         this.ctx.beginPath();
         this.ctx.moveTo(this.startX, this.startY);
         this.ctx.lineTo(e.clientX, e.clientY);
         this.ctx.stroke();
-        this.ctx.closePath();
+
+        // Arrowhead lines
+        const headLength = 20;
+
+        // Left side
+        this.ctx.beginPath();
+        this.ctx.moveTo(e.clientX, e.clientY);
+        this.ctx.lineTo(
+          e.clientX - headLength * Math.cos(angle - Math.PI / 6),
+          e.clientY - headLength * Math.sin(angle - Math.PI / 6)
+        );
+        this.ctx.stroke();
+
+        // Right side
+        this.ctx.beginPath();
+        this.ctx.moveTo(e.clientX, e.clientY);
+        this.ctx.lineTo(
+          e.clientX - headLength * Math.cos(angle + Math.PI / 6),
+          e.clientY - headLength * Math.sin(angle + Math.PI / 6)
+        );
+        this.ctx.stroke();
+        this.ctx.fillStyle = "white";
       }
     }
   };
