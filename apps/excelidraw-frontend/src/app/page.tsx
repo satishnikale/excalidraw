@@ -33,6 +33,15 @@ function App() {
     setAuthMode(mode);
   };
 
+  interface page {
+  setIsLoggedIn: boolean,
+  isLoggedIn:()=> void,
+  }
+  // usestate of logged in user 
+
+  // Logged in useState
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}

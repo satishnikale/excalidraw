@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Menu, X, Pen } from 'lucide-react';
-import DarkModeToggle from './DarkModeToggle';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Menu, X, Pen } from "lucide-react";
+import DarkModeToggle from "./DarkModeToggle";
 
 interface HeaderProps {
   onSignInClick: () => void;
@@ -10,7 +10,12 @@ interface HeaderProps {
   onToggleDarkMode: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ onSignInClick, onSignUpClick, isDarkMode, onToggleDarkMode }) => {
+const Header: React.FC<HeaderProps> = ({
+  onSignInClick,
+  onSignUpClick,
+  isDarkMode,
+  onToggleDarkMode,
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -32,25 +37,45 @@ const Header: React.FC<HeaderProps> = ({ onSignInClick, onSignUpClick, isDarkMod
             <div className="p-2 bg-purple-600 rounded-lg">
               <Pen className="h-6 w-6 text-white" />
             </div>
-            <span className="text-xl font-bold text-gray-900 dark:text-white">100xDraw</span>
+            <span className="text-xl font-bold text-gray-900 dark:text-white">
+              100xDraw
+            </span>
           </motion.div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+            <a
+              href="#features"
+              className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+            >
               Features
             </a>
-            <a href="#about" className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+            <a
+              href="#about"
+              className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+            >
               About
             </a>
-            <a href="#contact" className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+            <a
+              href="#contact"
+              className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+            >
               Contact
             </a>
           </nav>
 
           {/* Desktop Auth Buttons */}
+
+          {/* {
+              // conditional rendering \
+              isLoggedIn ?():()
+            } */}
+
           <div className="hidden md:flex items-center space-x-4">
-            <DarkModeToggle isDarkMode={isDarkMode} onToggle={onToggleDarkMode} />
+            <DarkModeToggle
+              isDarkMode={isDarkMode}
+              onToggle={onToggleDarkMode}
+            />
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -75,7 +100,11 @@ const Header: React.FC<HeaderProps> = ({ onSignInClick, onSignUpClick, isDarkMod
             onClick={toggleMenu}
             className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
           >
-            {isMenuOpen ? <X className="h-6 w-6 text-gray-700 dark:text-gray-300" /> : <Menu className="h-6 w-6 text-gray-700 dark:text-gray-300" />}
+            {isMenuOpen ? (
+              <X className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+            ) : (
+              <Menu className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+            )}
           </motion.button>
         </div>
 
@@ -87,18 +116,30 @@ const Header: React.FC<HeaderProps> = ({ onSignInClick, onSignUpClick, isDarkMod
           className="md:hidden overflow-hidden"
         >
           <nav className="py-4 space-y-4">
-            <a href="#features" className="block text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+            <a
+              href="#features"
+              className="block text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+            >
               Features
             </a>
-            <a href="#about" className="block text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+            <a
+              href="#about"
+              className="block text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+            >
               About
             </a>
-            <a href="#contact" className="block text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+            <a
+              href="#contact"
+              className="block text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+            >
               Contact
             </a>
             <div className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-3">
               <div className="flex justify-center">
-                <DarkModeToggle isDarkMode={isDarkMode} onToggle={onToggleDarkMode} />
+                <DarkModeToggle
+                  isDarkMode={isDarkMode}
+                  onToggle={onToggleDarkMode}
+                />
               </div>
               <button
                 onClick={onSignInClick}

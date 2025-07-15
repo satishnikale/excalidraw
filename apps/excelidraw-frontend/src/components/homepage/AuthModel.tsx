@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
+import axios from 'axios';
+import { HTTP_BACKEND } from '@/app/config';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -16,10 +18,13 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, mode, onModeChan
     password: '',
     confirmPassword: ''
   });
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
+
+
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -53,14 +58,35 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, mode, onModeChan
     if (!validateForm()) return;
 
     setIsLoading(true);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setIsLoading(false);
-    
-    // Reset form and close modal
-    setFormData({ name: '', email: '', password: '', confirmPassword: '' });
-    setErrors({});
-    onClose();
+
+    try {
+      if (mode === 'signup') {
+        const result = await axios.post(`${HTTP_BACKEND}/signup`, formData);
+
+        console.log("Printing the result --> ", result);
+
+        alert(`Hi ${formData.name}! Account created successfully.`);
+      } else {
+
+        // This is for  Afterr --> Logging handler 
+
+        const loginResult = await axios.post(`${HTTP_BACKEND}/signin`, formData);
+        console.log("Printing the Login Result -->", loginResult);
+        // setting the token in localstorage 
+        localStorage.setItem("token", loginResult.data.token);
+
+        alert("Logged in successfully!");
+      }
+
+      // Clear form
+      setFormData({ name: '', email: '', password: '', confirmPassword: '' });
+      setErrors({});
+      onClose();
+    } catch (error) {
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -77,15 +103,15 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, mode, onModeChan
 
   const modalVariants = {
     hidden: { opacity: 0, scale: 0.8, y: 50 },
-    visible: { 
-      opacity: 1, 
-      scale: 1, 
+    visible: {
+      opacity: 1,
+      scale: 1,
       y: 0,
       transition: { type: "spring", duration: 0.5 }
     },
-    exit: { 
-      opacity: 0, 
-      scale: 0.8, 
+    exit: {
+      opacity: 0,
+      scale: 0.8,
       y: 50,
       transition: { duration: 0.3 }
     }
@@ -138,9 +164,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, mode, onModeChan
                         id="name"
                         value={formData.name}
                         onChange={(e) => handleInputChange('name', e.target.value)}
-                        className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white ${
-                          errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
-                        }`}
+                        className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white ${errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                          }`}
                         placeholder="Enter your full name"
                       />
                     </div>
@@ -167,9 +192,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, mode, onModeChan
                       id="email"
                       value={formData.email}
                       onChange={(e) => handleInputChange('email', e.target.value)}
-                      className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white ${
-                        errors.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
-                      }`}
+                      className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white ${errors.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                        }`}
                       placeholder="Enter your email"
                     />
                   </div>
@@ -195,9 +219,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, mode, onModeChan
                       id="password"
                       value={formData.password}
                       onChange={(e) => handleInputChange('password', e.target.value)}
-                      className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white ${
-                        errors.password ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
-                      }`}
+                      className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white ${errors.password ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                        }`}
                       placeholder="Enter your password"
                     />
                     <button
@@ -231,9 +254,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, mode, onModeChan
                         id="confirmPassword"
                         value={formData.confirmPassword}
                         onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-                        className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white ${
-                          errors.confirmPassword ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
-                        }`}
+                        className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                          }`}
                         placeholder="Confirm your password"
                       />
                       <button
@@ -275,17 +297,26 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, mode, onModeChan
                 </motion.button>
               </form>
 
-              <div className="mt-6 text-center">
-                <p className="text-gray-600 dark:text-gray-400">
-                  {mode === 'signin' ? "Don't have an account?" : "Already have an account?"}
-                  <button
-                    onClick={() => onModeChange(mode === 'signin' ? 'signup' : 'signin')}
-                    className="ml-2 text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 font-semibold"
-                  >
-                    {mode === 'signin' ? 'Sign up' : 'Sign in'}
-                  </button>
-                </p>
-              </div>
+
+
+                      <div className="mt-6 text-center">
+                        <p className="text-gray-600 dark:text-gray-400">
+                          {mode === 'signin' ? "Don't have an account?" : "Already have an account?"}
+                          <button
+                            onClick={() => onModeChange(mode === 'signin' ? 'signup' : 'signin')}
+                            className="ml-2 text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 font-semibold"
+                          >
+                            {mode === 'signin' ? 'Sign up' : 'Sign in'}
+                          </button>
+                        </p>
+                      </div>
+             
+
+
+
+
+         
+
             </div>
           </motion.div>
         </motion.div>
