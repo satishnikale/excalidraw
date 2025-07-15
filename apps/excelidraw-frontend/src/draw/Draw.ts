@@ -37,7 +37,14 @@ type Shape =
   | {
       type: "pencil";
       points: { x: number; y: number }[];
-    };
+    }
+  | {
+    type: "text",
+    startX: number;
+    startY: number;
+    endX: number;
+    endY: number;
+  };
 
 export class Draw {
   private canvas: HTMLCanvasElement;
@@ -175,6 +182,11 @@ export class Draw {
       };
       this.isDrawingPencil = false;
       this.ctx.closePath();
+    } else if(this.selectedTool === "text"){
+      // shape = {
+      //   type: "text",
+    
+      // }
     }
 
     if (shape) {
@@ -222,7 +234,10 @@ export class Draw {
         this.ctx.lineTo(e.clientX, e.clientY);
         this.ctx.stroke();
       } else if (this.selectedTool === "arrow") {
-        const angle = Math.atan2(e.clientY - this.startY, e.clientX - this.startX);
+        const angle = Math.atan2(
+          e.clientY - this.startY,
+          e.clientX - this.startX
+        );
         const headLength = 20;
 
         this.ctx.beginPath();
@@ -266,7 +281,10 @@ export class Draw {
   };
 
   touchEndHandler = () => {
-    this.mouseUpHandler({ clientX: this.startX, clientY: this.startY } as MouseEvent);
+    this.mouseUpHandler({
+      clientX: this.startX,
+      clientY: this.startY,
+    } as MouseEvent);
   };
 
   initMouseHandlers() {

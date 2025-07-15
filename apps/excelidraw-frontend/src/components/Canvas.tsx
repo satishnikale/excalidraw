@@ -2,10 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import { IconButton } from "./IconButton";
-import { Circle, Hand, LucideArrowRight, LucideDiamond, LucideMinus, LucideMousePointer, Pen, Pencil, Square } from "lucide-react";
+import { Circle, Hand, LucideArrowRight, LucideDiamond, LucideMinus, LucideMousePointer, LucideType, Pen, Pencil, Square } from "lucide-react";
 import { Draw } from "../draw/Draw";
 
-export type Tool = "circle" | "rect" | "pencil" | "line" | "arrow" | "select"; // | "hand" | "pointer" | "diamond" | "rightArrow";
+export type Tool = "circle" | "rect" | "pencil" | "line" | "arrow" | "select" | "text"; // | "hand" | "pointer" | "diamond" | "rightArrow";
 
 export function Canvas({
   roomId,
@@ -59,16 +59,16 @@ function Topbar({
 }) {
   return (
     <div>
-        
+
       <div className="flex flex-wrap absolute top-3 bg-[#222328] rounded-lg left-[40%]">
-        
-         {/* <IconButton
+
+        <IconButton
           onClick={() => {
-            return setSelectedTool("hand");
+            return setSelectedTool("text");
           }}
-          activated={selectedTool === "hand"}
-          icon={<Hand size={14} />}
-        /> */}
+          activated={selectedTool === "text"}
+          icon={<LucideType size={16} />}
+        />
 
         <IconButton
           onClick={() => {
@@ -89,7 +89,7 @@ function Topbar({
             setSelectedTool("rect");
           }}
           activated={selectedTool === "rect"}
-          icon={ <Square size={14} /> }
+          icon={<Square size={14} />}
         />
 
         <IconButton

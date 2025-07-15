@@ -1,61 +1,119 @@
-import { Github, Mail, Pen, Twitter } from "lucide-react";
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Pen, Twitter, Github, Linkedin, Mail } from 'lucide-react';
 
-export function Footer() {
-    return (
-        <div>
-            <footer className="bg-gray-900 text-white py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
-                <div className="max-w-7xl mx-auto">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-                        <div className="md:col-span-2">
-                            <div className="flex items-center space-x-2 mb-4 sm:mb-6">
-                                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-                                    <Pen className="text-white" size={16} />
-                                </div>
-                                <span className="text-xl sm:text-2xl font-bold">Excelidraw</span>
-                            </div>
-                            <p className="text-gray-400 mb-4 sm:mb-6 max-w-md text-sm sm:text-base">
-                                The most intuitive drawing and diagramming tool for modern teams.
-                                Create, collaborate, and share your ideas effortlessly.
-                            </p>
-                            <div className="flex space-x-3 sm:space-x-4">
-                                <button className="bg-gray-800 p-2 sm:p-3 rounded-lg hover:bg-gray-700 transition-colors">
-                                    <Github size={18} />
-                                </button>
-                                <button className="bg-gray-800 p-2 sm:p-3 rounded-lg hover:bg-gray-700 transition-colors">
-                                    <Twitter size={18} />
-                                </button>
-                                <button className="bg-gray-800 p-2 sm:p-3 rounded-lg hover:bg-gray-700 transition-colors">
-                                    <Mail size={18} />
-                                </button>
-                            </div>
-                        </div>
+const Footer: React.FC = () => {
+  const currentYear = new Date().getFullYear();
 
-                        <div>
-                            <h4 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Product</h4>
-                            <ul className="space-y-2 text-gray-400 text-sm sm:text-base">
-                                <li><a href="#" className="hover:text-white transition-colors">Features</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Templates</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Integrations</a></li>
-                            </ul>
-                        </div>
+  const footerVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.8, ease: "easeOut" }
+    }
+  };
 
-                        <div>
-                            <h4 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Support</h4>
-                            <ul className="space-y-2 text-gray-400 text-sm sm:text-base">
-                                <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Contact Us</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
-                            </ul>
-                        </div>
-                    </div>
+  return (
+    <motion.footer
+      variants ={footerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      className="bg-white dark:bg-black text-white py-12 shadow-xl"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="col-span-1 md:col-span-2">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="flex items-center space-x-2 mb-4"
+            >
+              <div className="p-2 bg-purple-600 rounded-lg">
+                <Pen className="h-6 w-6 text-white" />
+              </div>
+              <span className="text-xl font-bold text-gray-600">100xDraw</span>
+            </motion.div>
+            <p className="text-gray-500 dark:text-gray-400 mb-6 max-w-md leading-relaxed">
+              The ultimate digital whiteboard for teams, designers, and creators. 
+              Bring your ideas to life with intuitive drawing tools and real-time collaboration.
+            </p>
+            <div className="flex space-x-4">
+              {[
+                { icon: Twitter, href: 'https://x.com/satish_nikale', label: 'Twitter' },
+                { icon: Github, href: 'https://github.com/satishnikale', label: 'GitHub' },
+                { icon: Linkedin, href: 'https://linkedin.com/in/satishnikale', label: 'LinkedIn' },
+                { icon: Mail, href: 'mailto:satishnikale7@gmail.com', label: 'Email' }
+              ].map((social, index) => (
+                <motion.a
+                  key={index}
+                  href={social.href}
+                  whileHover={{ scale: 1.2, y: -2 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="p-2 bg-gray-800 dark:bg-gray-900 rounded-lg hover:bg-gray-700 dark:hover:bg-gray-800 transition-colors"
+                  aria-label={social.label}
+                >
+                  <social.icon className="h-5 w-5" />
+                </motion.a>
+              ))}
+            </div>
+          </div>
 
-                    <div className="border-t border-gray-800 mt-8 sm:mt-12 pt-6 sm:pt-8 text-center text-gray-400 text-sm sm:text-base">
-                        <p>&copy; 2024 Excelidraw. All rights reserved.</p>
-                    </div>
-                </div>
-            </footer>
+          <div>
+            <h3 className="text-lg font-semibold mb-4 text-gray-600 dark:text-gray-400">Product</h3>
+            <ul className="space-y-2">
+              {['Features', 'Pricing', 'Updates', 'Beta'].map((item) => (
+                <li key={item}>
+                  <motion.a
+                    href="#"
+                    whileHover={{ x: 5 }}
+                    className="text-gray-600 dark:text-gray-400 hover:text-blue-500 transition-colors"
+                  >
+                    {item}
+                  </motion.a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-4 text-gray-600 dark:text-gray-400">Company</h3>
+            <ul className="space-y-2">
+              {['About', 'Blog', 'Careers', 'Contact'].map((item) => (
+                <li key={item}>
+                  <motion.a
+                    href="#"
+                    whileHover={{ x: 5 }}
+                    className="text-gray-600 dark:text-gray-400 hover:text-blue-500 transition-colors"
+                  >
+                    {item}
+                  </motion.a>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-    )
-}
+
+        <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+          <p className="text-gray-600 dark:text-gray-400 text-sm">
+            © {currentYear} 100xDraw. All rights reserved.
+          </p>
+          <div className="flex space-x-6 mt-4 md:mt-0">
+            {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map((item) => (
+              <motion.a
+                key={item}
+                href="#"
+                whileHover={{ color: '#ffffff' }}
+                className="text-gray-600 dark:text-gray-600 hover:text-white text-sm transition-colors"
+              >
+                {item}
+              </motion.a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </motion.footer>
+  );
+};
+
+export default Footer;
