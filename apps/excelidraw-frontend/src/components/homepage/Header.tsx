@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Menu, X, Pen } from "lucide-react";
 import DarkModeToggle from "./DarkModeToggle";
+import { useRecoilState } from "recoil";
+import { isUserLoggedInState } from "@/store/atoms/userSession";
 
 interface HeaderProps {
   onSignInClick: () => void;
@@ -18,7 +20,7 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(true);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useRecoilState(isUserLoggedInState);
 
   return (
     <motion.header
