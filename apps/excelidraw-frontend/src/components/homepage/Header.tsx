@@ -17,8 +17,8 @@ const Header: React.FC<HeaderProps> = ({
   onToggleDarkMode,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(true);
 
   return (
     <motion.header
@@ -65,34 +65,42 @@ const Header: React.FC<HeaderProps> = ({
           </nav>
 
           {/* Desktop Auth Buttons */}
-
-          {/* {
-              // conditional rendering \
-              isLoggedIn ?():()
-            } */}
-
-          <div className="hidden md:flex items-center space-x-4">
-            <DarkModeToggle
-              isDarkMode={isDarkMode}
-              onToggle={onToggleDarkMode}
-            />
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={onSignInClick}
-              className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
-            >
-              Sign In
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={onSignUpClick}
-              className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 dark:hover:bg-purple-500 transition-colors"
-            >
-              Sign Up
-            </motion.button>
-          </div>
+          {
+            isUserLoggedIn ? (
+              <div className="hidden md:flex items-center space-x-4">
+                <DarkModeToggle
+                  isDarkMode={isDarkMode}
+                  onToggle={onToggleDarkMode}
+                />
+                <button className="hidden md:flex text-white px-4 py-2 rounded bg-blue-700"
+                  onClick={() => setIsUserLoggedIn(!isUserLoggedIn)}
+                >Log Out</button>
+              </div>
+            ) : (
+              <div className="hidden md:flex items-center space-x-4">
+                <DarkModeToggle
+                  isDarkMode={isDarkMode}
+                  onToggle={onToggleDarkMode}
+                />
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={onSignInClick}
+                  className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+                >
+                  Sign In
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={onSignUpClick}
+                  className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 dark:hover:bg-purple-500 transition-colors"
+                >
+                  Sign Up
+                </motion.button>
+              </div>
+            )
+          }
 
           {/* Mobile Menu Button */}
           <motion.button
@@ -134,30 +142,48 @@ const Header: React.FC<HeaderProps> = ({
             >
               Contact
             </a>
-            <div className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-3">
-              <div className="flex justify-center">
-                <DarkModeToggle
-                  isDarkMode={isDarkMode}
-                  onToggle={onToggleDarkMode}
-                />
-              </div>
-              <button
-                onClick={onSignInClick}
-                className="block w-full text-left text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
-              >
-                Sign In
-              </button>
-              <button
-                onClick={onSignUpClick}
-                className="block w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 dark:hover:bg-purple-500 transition-colors"
-              >
-                Sign Up
-              </button>
-            </div>
+            {isUserLoggedIn ?
+              (
+                <div className="flex flex-col gap-4 items-center space-x-4">
+                  <div className="flex justify-center">
+                    <DarkModeToggle
+                      isDarkMode={isDarkMode}
+                      onToggle={onToggleDarkMode}
+                    />
+                  </div>
+                  <button className="text-white px-4 py-2 rounded bg-blue-700"
+                    onClick={() => setIsUserLoggedIn(!isUserLoggedIn)}
+                  >Log Out</button>
+                </div>
+              ) :
+              (
+                <div className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-3">
+                  <div className="flex justify-center">
+                    <DarkModeToggle
+                      isDarkMode={isDarkMode}
+                      onToggle={onToggleDarkMode}
+                    />
+                  </div>
+                  <button
+                    onClick={onSignInClick}
+                    className="block w-full text-left text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+                  >
+                    Sign In
+                  </button>
+                  <button
+                    onClick={onSignUpClick}
+                    className="block w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 dark:hover:bg-purple-500 transition-colors"
+                  >
+                    Sign Up
+                  </button>
+                </div>
+              )
+            }
           </nav>
         </motion.div>
       </div>
     </motion.header>
+
   );
 };
 

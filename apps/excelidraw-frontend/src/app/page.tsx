@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import { motion } from 'framer-motion';
@@ -8,6 +8,7 @@ import Hero from "@/components/homepage/Hero";
 import Features from "@/components/homepage/Features";
 import Footer from "@/components/homepage/Footer";
 import AuthModal from "@/components/homepage/AuthModel";
+import { RecoilRoot } from "recoil";
 
 
 function App() {
@@ -33,39 +34,32 @@ function App() {
     setAuthMode(mode);
   };
 
-  interface page {
-  setIsLoggedIn: boolean,
-  isLoggedIn:()=> void,
-  }
-  // usestate of logged in user 
-
-  // Logged in useState
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300"
-    >
-      <Header
-        onSignInClick={openSignInModal} 
-        onSignUpClick={openSignUpModal}
-        isDarkMode={isDarkMode}
-        onToggleDarkMode={toggleDarkMode}
-      />
-      <Hero onGetStartedClick={openSignUpModal} />
-      <Features />
-      <Footer />
-      
-      <AuthModal
-        isOpen={isAuthModalOpen}
-        onClose={closeAuthModal}
-        mode={authMode}
-        onModeChange={changeAuthMode}
-      />
-    </motion.div>
+    <RecoilRoot>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300"
+      >
+        <Header
+          onSignInClick={openSignInModal}
+          onSignUpClick={openSignUpModal}
+          isDarkMode={isDarkMode}
+          onToggleDarkMode={toggleDarkMode}
+        />
+        <Hero onGetStartedClick={openSignUpModal} />
+        <Features />
+        <Footer />
+
+        <AuthModal
+          isOpen={isAuthModalOpen}
+          onClose={closeAuthModal}
+          mode={authMode}
+          onModeChange={changeAuthMode}
+        />
+      </motion.div>
+    </RecoilRoot>
   );
 }
 export default App;

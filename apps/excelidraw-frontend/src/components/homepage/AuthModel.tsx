@@ -56,28 +56,22 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, mode, onModeChan
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
-
     setIsLoading(true);
 
     try {
       if (mode === 'signup') {
+        // Signin in the application
         const result = await axios.post(`${HTTP_BACKEND}/signup`, formData);
-
-        console.log("Printing the result --> ", result);
-
         alert(`Hi ${formData.name}! Account created successfully.`);
-      } else {
-
+      } else if (mode === 'signin') {
         // This is for  Afterr --> Logging handler 
-
         const loginResult = await axios.post(`${HTTP_BACKEND}/signin`, formData);
         console.log("Printing the Login Result -->", loginResult);
         // setting the token in localstorage 
         localStorage.setItem("token", loginResult.data.token);
-
         alert("Logged in successfully!");
-      }
 
+      }
       // Clear form
       setFormData({ name: '', email: '', password: '', confirmPassword: '' });
       setErrors({});
@@ -296,27 +290,17 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, mode, onModeChan
                   )}
                 </motion.button>
               </form>
-
-
-
-                      <div className="mt-6 text-center">
-                        <p className="text-gray-600 dark:text-gray-400">
-                          {mode === 'signin' ? "Don't have an account?" : "Already have an account?"}
-                          <button
-                            onClick={() => onModeChange(mode === 'signin' ? 'signup' : 'signin')}
-                            className="ml-2 text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 font-semibold"
-                          >
-                            {mode === 'signin' ? 'Sign up' : 'Sign in'}
-                          </button>
-                        </p>
-                      </div>
-             
-
-
-
-
-         
-
+              <div className="mt-6 text-center">
+                <p className="text-gray-600 dark:text-gray-400">
+                  {mode === 'signin' ? "Don't have an account?" : "Already have an account?"}
+                  <button
+                    onClick={() => onModeChange(mode === 'signin' ? 'signup' : 'signin')}
+                    className="ml-2 text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 font-semibold"
+                  >
+                    {mode === 'signin' ? 'Sign up' : 'Sign in'}
+                  </button>
+                </p>
+              </div>
             </div>
           </motion.div>
         </motion.div>
