@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
 import axios from 'axios';
 import { HTTP_BACKEND } from '@/app/config';
+import { useAuthStore } from '@/store/useAuthStore';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -23,8 +24,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, mode, onModeChan
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
-
-
+  const { setLogin } = useAuthStore();
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -69,6 +69,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, mode, onModeChan
         console.log("Printing the Login Result -->", loginResult);
         // setting the token in localstorage 
         localStorage.setItem("token", loginResult.data.token);
+        setLogin(true);
         alert("Logged in successfully!");
 
       }

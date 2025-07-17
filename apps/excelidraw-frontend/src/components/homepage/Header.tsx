@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Menu, X, Pen } from "lucide-react";
 import DarkModeToggle from "./DarkModeToggle";
-import { useRecoilState } from "recoil";
-import { isUserLoggedInState } from "@/store/atoms/userSession";
+import { useAuthStore } from "@/store/useAuthStore";
 
 interface HeaderProps {
   onSignInClick: () => void;
@@ -20,7 +19,12 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  const [isUserLoggedIn, setIsUserLoggedIn] = useRecoilState(isUserLoggedInState);
+  const { isUserLogin, setLogin } = useAuthStore();
+
+  function logOutHandler(){
+    setLogin(false);
+    localStorage.removeItem('token');
+  }
 
   return (
     <motion.header
@@ -68,14 +72,14 @@ const Header: React.FC<HeaderProps> = ({
 
           {/* Desktop Auth Buttons */}
           {
-            isUserLoggedIn ? (
+            isUserLogin ? (
               <div className="hidden md:flex items-center space-x-4">
                 <DarkModeToggle
                   isDarkMode={isDarkMode}
                   onToggle={onToggleDarkMode}
                 />
                 <button className="hidden md:flex text-white px-4 py-2 rounded bg-blue-700"
-                  onClick={() => setIsUserLoggedIn(!isUserLoggedIn)}
+                  onClick={ ()=> logOutHandler() }
                 >Log Out</button>
               </div>
             ) : (
@@ -144,7 +148,7 @@ const Header: React.FC<HeaderProps> = ({
             >
               Contact
             </a>
-            {isUserLoggedIn ?
+            {isUserLogin ?
               (
                 <div className="flex flex-col gap-4 items-center space-x-4">
                   <div className="flex justify-center">
@@ -154,7 +158,7 @@ const Header: React.FC<HeaderProps> = ({
                     />
                   </div>
                   <button className="text-white px-4 py-2 rounded bg-blue-700"
-                    onClick={() => setIsUserLoggedIn(!isUserLoggedIn)}
+                    onClick={()=> logOutHandler()}
                   >Log Out</button>
                 </div>
               ) :
