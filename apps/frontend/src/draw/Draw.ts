@@ -105,7 +105,7 @@ export class Draw {
     this.ctx.fillStyle = "rgba(19,18,19,255)";
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-    this.existingShapes.forEach((shape) => {
+    this.existingShapes?.forEach((shape) => {
       if (shape.type === "rect") {
         drawRectangle(this.ctx, shape);
       } else if (shape.type === "circle") {

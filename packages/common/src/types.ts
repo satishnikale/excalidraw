@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { boolean } from "zod/v4";
 
 export const CreateUserSchema = z.object({
     email: z.string().min(3).max(100),

@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+'use client';
+
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Menu, X, Pen } from "lucide-react";
 import DarkModeToggle from "./DarkModeToggle";
@@ -20,12 +22,16 @@ const Header: React.FC<HeaderProps> = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const { isUserLogin, setLogin } = useAuthStore();
-
-  function logOutHandler(){
+  
+  function logOutHandler() {
     setLogin(false);
     localStorage.removeItem('token');
   }
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setLogin(!!token); // sets true if token exists, else false
+  }, [setLogin]);
   return (
     <motion.header
       initial={{ y: -100, opacity: 0 }}
@@ -72,14 +78,14 @@ const Header: React.FC<HeaderProps> = ({
 
           {/* Desktop Auth Buttons */}
           {
-            isUserLogin ? (
+            isUserLogin && localStorage.getItem('token') ? (
               <div className="hidden md:flex items-center space-x-4">
                 <DarkModeToggle
                   isDarkMode={isDarkMode}
                   onToggle={onToggleDarkMode}
                 />
                 <button className="hidden md:flex text-white px-4 py-2 rounded bg-blue-700"
-                  onClick={ ()=> logOutHandler() }
+                  onClick={() => logOutHandler()}
                 >Log Out</button>
               </div>
             ) : (
@@ -148,7 +154,7 @@ const Header: React.FC<HeaderProps> = ({
             >
               Contact
             </a>
-            {isUserLogin ?
+            {isUserLogin && localStorage.getItem('token') ?
               (
                 <div className="flex flex-col gap-4 items-center space-x-4">
                   <div className="flex justify-center">
@@ -158,7 +164,7 @@ const Header: React.FC<HeaderProps> = ({
                     />
                   </div>
                   <button className="text-white px-4 py-2 rounded bg-blue-700"
-                    onClick={()=> logOutHandler()}
+                    onClick={() => logOutHandler()}
                   >Log Out</button>
                 </div>
               ) :

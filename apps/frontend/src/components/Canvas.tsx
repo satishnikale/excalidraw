@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { IconButton } from "./IconButton";
-import { Circle, Hand, LucideArrowRight, LucideDiamond, LucideMinus, LucideMousePointer, LucideType, Pen, Pencil, Square } from "lucide-react";
+import { Circle, HamburgerIcon, Hand, LucideArrowRight, LucideDiamond, LucideMinus, LucideMousePointer, LucideType, Pen, Pencil, Square } from "lucide-react";
 import { Draw } from "../draw/Draw";
 
 export type Tool = "circle" | "rect" | "pencil" | "line" | "arrow" | "select" | "text"; // | "hand" | "pointer" | "diamond" | "rightArrow";
@@ -46,9 +46,23 @@ export function Canvas({
         height={window.innerHeight}
       ></canvas>
       <Topbar setSelectedTool={setSelectedTool} selectedTool={selectedTool} />
+      <HambergerToogleMenu />
     </div>
   );
 }
+
+function HambergerToogleMenu(){
+  return(
+    <>
+      <button>
+        <HamburgerIcon />
+      </button>
+    </>
+  )
+}
+
+
+
 
 function Topbar({
   selectedTool,
@@ -59,9 +73,7 @@ function Topbar({
 }) {
   return (
     <div>
-
       <div className="flex flex-wrap absolute top-3 bg-[#222328] rounded-lg left-[40%]">
-
         <IconButton
           onClick={() => {
             return setSelectedTool("text");

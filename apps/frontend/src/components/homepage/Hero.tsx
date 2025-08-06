@@ -1,12 +1,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Play, Zap, Users, Palette } from 'lucide-react';
+import { useAuthStore } from '@/store/useAuthStore';
+import { redirect } from 'next/navigation';
 
 interface HeroProps {
   onGetStartedClick: () => void;
+  onCreateRoomClick: () => void;
 }
 
-const Hero: React.FC<HeroProps> = ({ onGetStartedClick }) => {
+const Hero: React.FC<HeroProps> = ({ onGetStartedClick, onCreateRoomClick }) => {
+  const { isUserLogin } = useAuthStore();
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -100,7 +104,7 @@ const Hero: React.FC<HeroProps> = ({ onGetStartedClick }) => {
             variants={itemVariants}
             className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed"
           >
-            The ultimate digital whiteboard for teams, designers, and creators. 
+            The ultimate digital whiteboard for teams, designers, and creators.
             Bring your ideas to life with intuitive drawing tools and real-time collaboration.
           </motion.p>
 
@@ -108,23 +112,49 @@ const Hero: React.FC<HeroProps> = ({ onGetStartedClick }) => {
             variants={itemVariants}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
           >
+            {/* {
+              isUserLogin ? (<>Create Room</>) : (<>Get Started Free</>)
+            } */}
+            {
+              isUserLogin ? (
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={onCreateRoomClick}
+                  className="flex items-center px-8 py-4 bg-purple-600 text-white rounded-lg text-lg font-semibold hover:bg-purple-700 dark:hover:bg-purple-500 transition-colors shadow-lg hover:shadow-xl"
+                >
+                  Create Room
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </motion.button>
+              ) : (
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={onGetStartedClick}
+                  className="flex items-center px-8 py-4 bg-purple-600 text-white rounded-lg text-lg font-semibold hover:bg-purple-700 dark:hover:bg-purple-500 transition-colors shadow-lg hover:shadow-xl"
+                >
+                  Get Started Free
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </motion.button>
+              )
+            }
+
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={onGetStartedClick}
-              className="flex items-center px-8 py-4 bg-purple-600 text-white rounded-lg text-lg font-semibold hover:bg-purple-700 dark:hover:bg-purple-500 transition-colors shadow-lg hover:shadow-xl"
-            >
-              Get Started Free
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </motion.button>
-            
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              onClick={() => {
+                redirect(`/canvas/${14}`)
+              }}
               className="flex items-center px-8 py-4 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg text-lg font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-lg hover:shadow-xl border border-gray-200 dark:border-gray-600"
             >
-              <Play className="mr-2 h-5 w-5" />
-              Watch Demo
+              {
+                isUserLogin ? ("") : (<Play className="mr-2 h-5 w-5" />)
+              }
+
+              {
+                isUserLogin ? (<>Draw</>) : (<>Watch Demo</>)
+
+              }
             </motion.button>
           </motion.div>
 

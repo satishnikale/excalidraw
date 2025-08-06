@@ -6,11 +6,19 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { JWT_SECRET, PORT } from "@repo/backend-common/config";
 import { middleware } from "./middleware";
-import { CreateRoomSchema, CreateUserSchema, SignInSchema } from "@repo/common/types";
+import {
+  CreateRoomSchema,
+  CreateUserSchema,
+  SignInSchema,
+} from "@repo/common/types";
 import { prismaClient } from "@repo/db/client";
 const app = express();
 app.use(express.json());
 app.use(cors());
+
+interface CustomRequest extends Request {
+  userId: string;
+}
 
 app.post("/signup", async (req, res) => {
   const parsedData = CreateUserSchema.safeParse(req.body);
@@ -46,6 +54,7 @@ app.post("/signin", async (req, res) => {
       message: "Invalide Inputs.",
     });
   }
+  const hashedPassword = await bcrypt.hash(parsedData.data!.password, 5);
   try {
     const dbUser = await prismaClient.user.findFirst({
       where: {
@@ -53,14 +62,12 @@ app.post("/signin", async (req, res) => {
       },
     });
     if (!dbUser) {
-      res.json({ message: "User not found." });
+      res.json({ message: "Wrong Credentials" });
       return;
     }
-    const match = bcrypt.compare(dbUser?.password, parsedData.data!.password);
-    if (
-      parsedData.data?.email != dbUser!.email &&
-      parsedData.data?.password != dbUser!.password
-    ) {
+    const match = bcrypt.compare(dbUser.password, parsedData.data!.password);
+    console.log("is matching password", match);
+    if (!match || dbUser.email != parsedData.data?.email) {
       res.json({
         message: "Invalide Credentials.",
       });
@@ -97,13 +104,13 @@ app.post("/room", middleware, async (req, res) => {
     const room = await prismaClient.room.create({
       data: {
         slug: parsedData.data?.name!,
-        adminId: userId
-      }
+        adminId: userId,
+      },
     });
     res.json({
       roomName: room.slug,
-      roomId: room.id
-    })
+      roomId: room.id,
+    });
   } catch (error) {
     res.json({
       message: "Failed to create Room Please try again.",
@@ -111,39 +118,39 @@ app.post("/room", middleware, async (req, res) => {
   }
 });
 
-app.get("/chats/:roomId", async  (req, res) => {
-try {
+app.get("/chats/:roomId", async (req, res) => {
+  try {
     const roomId = Number(req.params.roomId);
-  const message = await prismaClient.chat.findMany({
-     where:{
-      roomId: roomId
-    },
-    orderBy: {
-      id: "desc"
-    },
-    take: 1000
-  });
-  res.json({
-    message
-  });
-} catch (e) {
-  res.json({
-    messages:[]
-  })
-}
+    const message = await prismaClient.chat.findMany({
+      where: {
+        roomId: roomId,
+      },
+      orderBy: {
+        id: "desc",
+      },
+      take: 1000,
+    });
+    res.json({
+      message,
+    });
+  } catch (e) {
+    res.json({
+      messages: [],
+    });
+  }
 });
 
 app.get("/room/:slug", async (req, res) => {
   const slug = req.params.slug;
   const room = await prismaClient.room.findFirst({
-     where:{
-      slug
-    }
+    where: {
+      slug,
+    },
   });
   res.json({
-    room
-  })
-})
+    room,
+  });
+});
 
 async function main() {
   app.listen(PORT);

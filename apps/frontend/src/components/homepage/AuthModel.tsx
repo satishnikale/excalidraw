@@ -62,7 +62,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, mode, onModeChan
       if (mode === 'signup') {
         // Signin in the application
         const result = await axios.post(`${HTTP_BACKEND}/signup`, formData);
-        alert(`Hi ${formData.name}! Account created successfully.`);
+        alert(`Hi ${result.data.message.name}! Account created successfully.`);
       } else if (mode === 'signin') {
         // This is for  Afterr --> Logging handler 
         const loginResult = await axios.post(`${HTTP_BACKEND}/signin`, formData);
@@ -70,8 +70,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, mode, onModeChan
         // setting the token in localstorage 
         localStorage.setItem("token", loginResult.data.token);
         setLogin(true);
-        alert("Logged in successfully!");
-
+        alert(`${loginResult.data.message}`);
       }
       // Clear form
       setFormData({ name: '', email: '', password: '', confirmPassword: '' });
